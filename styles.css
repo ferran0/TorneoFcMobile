@@ -1,50 +1,41 @@
-:root{
-  --bg:#f4f6f8; --card:#ffffff; --accent:#1f6feb; --muted:#666;
-  --radius:10px;
-  font-family: Inter, Roboto, Arial, sans-serif;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#111}
-.topbar{background:linear-gradient(90deg,#0d47a1,#1976d2);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
-.topbar h1{margin:0;font-size:18px}
-.topbar nav{display:flex;gap:8px}
-.tab{background:transparent;border:1px solid rgba(255,255,255,0.18);color:#fff;padding:6px 10px;border-radius:6px;cursor:pointer}
-.tab.active{background:#fff;color:#0d47a1}
-.container{max-width:1100px;margin:18px auto;padding:12px}
-.panel{background:var(--card);padding:16px;border-radius:8px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:18px}
-.hidden{display:none}
-
-.form-actions{margin-top:12px}
-.form-actions button{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
-
-input[type="text"],input[type="number"],select,input[type="datetime-local"],input[type="file"],input[type="password"]{
-  width:100%;padding:8px;border:1px solid #ddd;border-radius:6px;margin-top:6px;
+body {
+    background: #111;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+    margin: 0;
 }
 
-.table-actions{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.table-actions button{padding:8px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
-
-#standings-wrap table{width:100%;border-collapse:collapse;margin-bottom:12px}
-#standings-wrap th,#standings-wrap td{padding:8px;border-bottom:1px solid #eee;text-align:center}
-#standings-wrap th{background:#fafafa}
-
-.goals-row{display:flex;gap:12px}
-.goals-row input{width:120px}
-
-.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.card{background:var(--card);padding:12px;border-radius:8px;border:1px solid #f0f0f0}
-.small{font-size:13px;color:var(--muted)}
-.muted{color:var(--muted);font-size:13px}
-.footer{text-align:center;padding:12px;color:var(--muted);font-size:13px}
-
-#matches-list .match-row,#calendar-list .fc-event,#admin-results .res-row,#admin-players .player-row{
-  border:1px solid #eee;padding:8px;border-radius:8px;margin-bottom:8px;background:#fafafa;display:flex;justify-content:space-between;align-items:center;
+header {
+    background: #222;
+    padding: 15px;
 }
-.logo-thumb{width:44px;height:44px;border-radius:6px;object-fit:cover;border:1px solid #ddd}
 
-.admin-actions{display:flex;gap:8px;margin-top:12px}
+nav button {
+    margin: 5px;
+    padding: 10px 15px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
 
-@media(max-width:720px){
-  .topbar{flex-direction:column;gap:8px;align-items:flex-start}
-  .goals-row{flex-direction:column}
+.section {
+    padding: 20px;
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+table {
+    margin: auto;
+    width: 90%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid #666;
+    padding: 8px;
 }
