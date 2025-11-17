@@ -1,79 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>FC Torneo</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FC Mobile - Campeonato</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="topbar">
+    <h1>FC Mobile — Campeonato</h1>
+    <nav>
+      <button id="tab-register" class="tab active">Registrar</button>
+      <button id="tab-table" class="tab">Tabla</button>
+      <button id="tab-calendar" class="tab">Calendario</button>
+      <button id="tab-admin-btn" class="tab">Admin</button>
+    </nav>
+  </header>
 
-<header>
-  <h1>⚽ Torneo FC Mobile</h1>
-</header>
+  <main class="container">
+    <!-- REGISTER -->
+    <section id="panel-register" class="panel">
+      <h2>Registrar jugador</h2>
+      <p class="muted">Introduce tu nombre de cuenta de FC Mobile y el código que te dió el organizador.</p>
+      <form id="form-register">
+        <label>Nombre de cuenta
+          <input id="reg-name" type="text" placeholder="ej: eca" required>
+        </label>
+        <label>Código de acceso (4 dígitos)
+          <input id="reg-code" type="text" placeholder="0000" maxlength="4" required>
+        </label>
+        <div class="form-actions">
+          <button type="submit">Registrar</button>
+        </div>
+        <p id="reg-msg" class="muted"></p>
+        <div id="reg-pin" class="muted"></div>
+      </form>
+    </section>
 
-<nav id="menu">
-  <button onclick="showSection('register')">Registrar jugador</button>
-  <button onclick="showSection('table')">Tabla</button>
-  <button onclick="showSection('calendar')">Calendario</button>
-  <button onclick="adminLogin()">Admin</button>
-</nav>
+    <!-- TABLE -->
+    <section id="panel-table" class="panel hidden">
+      <h2>Tabla de posiciones</h2>
+      <div class="table-actions">
+        <button id="export-standings">Exportar CSV</button>
+      </div>
+      <div id="standings-wrap"></div>
 
-<!-- SECCIÓN REGISTRO -->
-<section id="register" class="section">
-  <h2>Registrar jugador</h2>
-  <input type="text" id="playerName" placeholder="Nombre de cuenta FC Mobile">
-  <input type="number" id="playerCode" placeholder="Código de acceso">
-  <button onclick="registerPlayer()">Registrar</button>
-  <p id="regMsg"></p>
-</section>
+      <h3>Partidos (registro formal)</h3>
+      <div id="matches-list"></div>
+    </section>
 
-<!-- TABLA -->
-<section id="table" class="section">
-  <h2>Tabla de posiciones</h2>
-  <table id="standingsTable">
-    <thead>
-      <tr>
-        <th>Jugador</th>
-        <th>GF</th>
-        <th>GC</th>
-        <th>DG</th>
-        <th>PTS</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
+    <!-- CALENDAR -->
+    <section id="panel-calendar" class="panel hidden">
+      <h2>Calendario</h2>
+      <div id="calendar-list"></div>
+    </section>
 
-<!-- CALENDARIO -->
-<section id="calendar" class="section">
-  <h2>Calendario de partidos</h2>
-  <div id="matchList"></div>
-</section>
+    <!-- SUBMIT RESULT (Solo usuarios que tengan PIN) -->
+    <section id="panel-submit" class="panel hidden">
+      <h2>Ingresar resultado</h2>
+      <p class="muted">Debes conocer el PIN de la cuenta que registra (te lo dio el organizador al registrarte).</p>
+      <form id="form-submit" enctype="multipart/form-data">
+        <label>Partido
+          <select id="select-match" required></select>
+        </label>
 
-<!-- ADMIN PANEL -->
-<section id="admin" class="section admin">
-  <h2>Panel Admin</h2>
+        <div class="goals-row">
+          <label>Goles Jugador A <input id="goals-a" type="number" min="0" required></label>
+          <label>Goles Jugador B <input id="goals-b" type="number" min="0" required></label>
+        </div>
 
-  <h3>Generar código de pago</h3>
-  <button onclick="generateCode()">Generar código</button>
-  <p id="generatedCode"></p>
+        <label>PIN del que registra
+          <input id="submit-pin" type="text" placeholder="tu PIN" required>
+        </label>
 
-  <h3>Agregar partido al calendario</h3>
-  <input id="p1" placeholder="Jugador A">
-  <input id="p2" placeholder="Jugador B">
-  <input id="date" type="date">
-  <button onclick="addMatch()">Agregar partido</button>
+        <label>Screenshot (obligatorio)
+          <input id="evidence" type="file" accept="image/*" required>
+        </label>
 
-  <h3>Ingresar resultados</h3>
-  <input id="resId" placeholder="ID del partido">
-  <input id="resA" type="number" placeholder="Goles A">
-  <input id="resB" type="number" placeholder="Goles B">
-  <button onclick="submitResult()">Guardar resultado</button>
+        <div class="form-actions">
+          <button type="submit">Enviar resultado</button>
+        </div>
+        <p id="submit-msg" class="muted"></p>
+      </form>
+    </section>
 
-  <h3>Jugadores registrados</h3>
-  <ul id="playerList"></ul>
-</section>
+    <!-- ADMIN LOGIN -->
+    <section id="panel-admin-login" class="panel hidden admin-login">
+      <h2>Acceso Admin</h2>
+      <p class="muted">Introduce la llave de administrador.</p>
+      <form id="form-admin-login">
+        <input id="admin-key" type="password" placeholder="Clave admin">
+        <div class="form-actions"><button type="submit">Entrar al admin</button></div>
+        <p id="admin-login-msg" class="muted"></p>
+      </form>
+    </section>
 
-<script src="script.js"></script>
+    <!-- ADMIN PANEL -->
+    <section id="panel-admin" class="panel hidden admin-panel">
+      <h2>Panel Admin (privado)</h2>
+
+      <div class="admin-grid">
+        <div class="card">
+          <h3>Generar código (PAGAR)</h3>
+          <p class="small">Botón simbólico «Pagar» — genera un código de 4 dígitos que podés enviar por WhatsApp.</p>
+          <button id="btn-pay">Pagar / Generar código</button>
+          <div id="code-list" class="muted"></div>
+        </div>
+
+        <div class="card">
+          <h3>Agregar partido</h3>
+          <form id="form-add-match">
+            <label>Fecha y hora <input id="am-date" type="datetime-local" required></label>
+            <label>Jugador A <select id="am-a" required></select></label>
+            <label>Jugador B <select id="am-b" required></select></label>
+            <div class="form-actions"><button type="submit">Agregar partido</button></div>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>Ingresar resultado (Admin)</h3>
+          <form id="form-admin-result">
+            <label>Partido <select id="admin-match" required></select></label>
+            <label>Goles A <input id="admin-goals-a" type="number" min="0" required></label>
+            <label>Goles B <input id="admin-goals-b" type="number" min="0" required></label>
+            <label>Comentario (opcional) <input id="admin-comment" type="text"></label>
+            <div class="form-actions"><button type="submit">Guardar resultado</button></div>
+          </form>
+        </div>
+      </div>
+
+      <hr>
+
+      <h3>Jugadores</h3>
+      <div id="admin-players"></div>
+
+      <hr>
+
+      <h3>Resultados registrados</h3>
+      <div id="admin-results"></div>
+
+      <div class="admin-actions">
+        <button id="btn-export-csv">Exportar todo (CSV)</button>
+        <button id="btn-logout-admin">Salir Admin</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>Proyecto: FC Mobile · Guardado en el navegador (localStorage).</small>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
